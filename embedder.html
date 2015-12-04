@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .iframe-wrap {
+            display:inline-block;margin: 5px;
+        }
+        .iframe-wrap,
+        .iframe-wrap a {
+            width:206px;height:136px;
+            padding:0;
+            margin:0;
+        }
+        .iframe-wrap iframe {
+            position:absolute;transform-origin: 0 0;overflow: hidden;
+        }
+        .iframe-wrap a {
+            display:block;position:absolute;color:transparent;text-align:center;font-size:20px;font-weight:bold;
+        }
+        .iframe-wrap a:hover {
+            background-color: rgba(0,0,0,0.5);color:white;
+        }
+        .iframe-wrap.loading iframe { display:none }
+        .iframe-wrap.loaded iframe { display:block }
+    </style>
+</head>
+<body>
+
+    <!-- <div class="iframe-wrap">
+        <iframe id="viaf-iframe" class="hide" style="width:1010px;height:685px;transform: scale(0.2);" src="" scrolling="no" seamless="seamless"></iframe>
+        <a href="http://www.bbc.co.uk" target="_blank"><br/>Launch<br/>VIAF Record</a>
+    </div> -->
+
+    <script type="text/javascript">
+        (function() {
+
+            var config = {
+
+                addresses : [
+                    {
+                        website:"http://www.bbc.co.uk",
+                        text : "BBC"
+                    },
+                    {
+                        website:"http://emlo.bodleian.ox.ac.uk",
+                        text : "EMLO"
+                    }
+                ]
+            };
+
+            window.addEventListener("load", function() {
+                for( var i=0; i<config.addresses.length; i++  ) {
+
+                    var div = document.createElement("div"),
+                        iframe = document.createElement("iframe"),
+                        a = document.createElement("a"),
+                        aText =  document.createTextNode( config.addresses[i].text );
+
+                    div.setAttribute("class","iframe-wrap loading");
+
+                    iframe.setAttribute("src", "");
+                    iframe.setAttribute("scrolling", "no");
+                    iframe.setAttribute("seamless", "seamless");
+                    iframe.setAttribute("style","width:1010px;height:685px;transform: scale(0.2);");
+                    iframe.setAttribute("class","loading");
+
+                    iframe.onload = iFrameOnLoad.bind(this,div);
+                    iframe.onerror = iFrameOnError.bind(this,aText);
+
+                    a.setAttribute("src",config.addresses[i].website);
+                    a.onclick = aOnClick.bind(a,iframe);
+
+                    a.appendChild(aText);
+                    div.appendChild(iframe);
+                    div.appendChild(a);
+                    document.body.appendChild(div);
+
+                    setTimeout( updateIframeSrc.bind(this,iframe,i), 50 );
+                }
+
+                function updateIframeSrc(iframe, config_number) {
+                    iframe.setAttribute("src", config.addresses[config_number].website );
+                }
+                function iFrameOnLoad(div) {
+                    div.classList.add("loaded");
+                }
+                function iFrameOnError(aText) {
+                    aText.currentText = "ERROR!";
+                }
+                function aOnClick ( iframe ) {
+                    this.
+                    iframe.setAttribute("style","width:1010px;height:685px;transform: scale(1);");
+                }
+
+            }, false);
+        })();
+    </script>
+
+</body>
+</html>
